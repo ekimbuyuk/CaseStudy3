@@ -7,12 +7,18 @@ output: html_document
 
 Interim report 1: create an engaging visualization of observed infant mortality rates by year, county and race
 
-```{r}
+```{r, include=FALSE}
 #Libraries
 if (!require("readr")) install.packages("readr")
 library(readr)
 if (!require("dplyr")) install.packages("dplyr")
 library(dplyr)
+if (!require("maps")) install.packages("maps")
+library(maps)
+if (!require("ggthemes")) install.packages("ggthemes")
+library(ggthemes)
+if (!require("mapproj")) install.packages("mapproj")
+library(mapproj)
 ```
 
 
@@ -33,7 +39,27 @@ Potential Visualizations:
 1. Can we figure out where all of these counties are located and show a heat map of deaths?
 2. A similar visualization to what we made that changes over years. As years progress, shows changes in deaths of races? How should we show counties? 
 
+#Create a Dataframe with Simulated Data
 ```{r}
+library(ggplot2)
+nc_map <- tbl_df(map_data("county", region = "north carolina"))
+# Simulate data to plot by county
+data_frame(
+  subregion = unique(nc_map$subregion),
+  simdata = sample(50:500, length(unique(nc_map$subregion)))
+) -> simdata_df
+```
 
+#Plot a Map
+
+```{r}
+nc_map <- left_join(nc_map, simdata_df)
+ggplot() +
+  geom_polygon(data=nc_map, color="black",
+               aes(x=long, y=lat, group=subregion, fill=simdata)) +
+  viridis::scale_fill_viridis(name="Simulated Data ", direction=-1) +
+  coord_map("polyconic") +
+  ggthemes::theme_map() +
+  theme(legend.position="bottom")
 ```
 
