@@ -19,44 +19,50 @@ if (!require("ggthemes")) install.packages("ggthemes")
 library(ggthemes)
 if (!require("mapproj")) install.packages("mapproj")
 library(mapproj)
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
 ```
 
 
 ```{r}
-#Loading and Visualizing Data
+#Loading and Merging Datasets
 data <- read_csv("Yr1116Death.csv")
+Country_Codes <- read_excel("Dataset Descriptions.xls", 
+     sheet = "County Codes")
 
-data %>% group_by(year) %>% summarise(count_n = n())
+Country_Codes$CORES = as.integer(Country_Codes$CORES)
+colnames(Country_Codes)[colnames(Country_Codes)=="CORES"] <- "cores"
+merged_data<- left_join(Country_Codes,data)
 
-data %>% group_by(race) %>% summarise(count_n = n())
-
-data %>% group_by(hisp) %>% summarise(count_n = n())
-
-data %>% group_by(cores) %>% summarise(count_n = n())
+nc_map <- tbl_df(map_data("county", region = "north carolina"))
+colnames(nc_map)[colnames(nc_map)=="subregion"] <- "COUNTY"
+merged_data = merged_data %>% mutate(COUNTY = tolower(COUNTY))
+nc_map_join <- left_join(nc_map,merged_data)
 ```
 
 Potential Visualizations:
 1. Can we figure out where all of these counties are located and show a heat map of deaths?
 2. A similar visualization to what we made that changes over years. As years progress, shows changes in deaths of races? How should we show counties? 
 
-#Create a Dataframe with Simulated Data
+#Some EDA For No Reason
+
 ```{r}
-library(ggplot2)
-nc_map <- tbl_df(map_data("county", region = "north carolina"))
-# Simulate data to plot by county
-data_frame(
-  subregion = unique(nc_map$subregion),
-  simdata = sample(50:500, length(unique(nc_map$subregion)))
-) -> simdata_df
+Deaths_Per_County = nc_map_join %>% group_by(COUNTY) %>% summarise(count_n = n())
+
+#data %>% group_by(race) %>% summarise(count_n = n())
+#data %>% group_by(hisp) %>% summarise(count_n = n())
+#data %>% group_by(cores) %>% summarise(count_n = n())
 ```
 
 #Plot a Map
 
+Not functioning properly...
+
 ```{r}
-nc_map <- left_join(nc_map, simdata_df)
+#Attempting to Plot a map on a gradient based on # of Deaths. Can we get labels on this map? 
 ggplot() +
-  geom_polygon(data=nc_map, color="black",
-               aes(x=long, y=lat, group=subregion, fill=simdata)) +
+  geom_polygon(data=Deaths_join, color="black",
+               aes(x=long, y=lat, group=COUNTY, fill=count_n)) +
   viridis::scale_fill_viridis(name="Simulated Data ", direction=-1) +
   coord_map("polyconic") +
   ggthemes::theme_map() +
