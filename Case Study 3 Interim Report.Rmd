@@ -1,0 +1,39 @@
+---
+title: "Case Study 3 Interim Report"
+author: "Ekim Buyuk"
+date: "10/1/2018"
+output: html_document
+---
+
+Interim report 1: create an engaging visualization of observed infant mortality rates by year, county and race
+
+```{r}
+#Libraries
+if (!require("readr")) install.packages("readr")
+library(readr)
+if (!require("dplyr")) install.packages("dplyr")
+library(dplyr)
+```
+
+
+```{r}
+#Loading and Visualizing Data
+data <- read_csv("Yr1116Death.csv")
+
+data %>% group_by(year) %>% summarise(count_n = n())
+
+data %>% group_by(race) %>% summarise(count_n = n())
+
+data %>% group_by(hisp) %>% summarise(count_n = n())
+
+data %>% group_by(cores) %>% summarise(count_n = n())
+```
+
+Potential Visualizations:
+1. Can we figure out where all of these counties are located and show a heat map of deaths?
+2. A similar visualization to what we made that changes over years. As years progress, shows changes in deaths of races? How should we show counties? 
+
+```{r}
+
+```
+
