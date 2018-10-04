@@ -71,3 +71,10 @@ Your report should include:
 
 In your report targeted to SCHS, if you feel they should use different methodology (e.g., your model) for estimating infant mortality rates, be sure to make a clear argument for doing so.
 
+#Part I: Hierarchical Modeling 
+
+```{r, name=EKIM}
+
+```
+
+In order to obtain estimates of infant mortality in 2015, we wanted to use data from 2011 to 2014 to help us with our predictions. 
