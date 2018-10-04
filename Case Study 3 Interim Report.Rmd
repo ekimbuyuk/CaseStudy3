@@ -11,6 +11,8 @@ Interim report 1: create an engaging visualization of observed infant mortality 
 #Libraries
 if (!require("readr")) install.packages("readr")
 library(readr)
+if (!require("readxl")) install.packages("readxl")
+library(readxl)
 if (!require("dplyr")) install.packages("dplyr")
 library(dplyr)
 if (!require("maps")) install.packages("maps")
@@ -33,11 +35,13 @@ Country_Codes <- read_excel("Dataset Descriptions.xls",
 Country_Codes$CORES = as.integer(Country_Codes$CORES)
 colnames(Country_Codes)[colnames(Country_Codes)=="CORES"] <- "cores"
 merged_data<- left_join(Country_Codes,data)
+write.csv(merged_data, "NC_Infant_Death_Merged.csv")
 
 nc_map <- tbl_df(map_data("county", region = "north carolina"))
 colnames(nc_map)[colnames(nc_map)=="subregion"] <- "COUNTY"
 merged_data = merged_data %>% mutate(COUNTY = tolower(COUNTY))
 nc_map_join <- left_join(nc_map,merged_data)
+write.csv(nc_map_join, "NC_Infant_Death.csv")
 ```
 
 Potential Visualizations:
@@ -61,7 +65,7 @@ Not functioning properly...
 ```{r}
 #Attempting to Plot a map on a gradient based on # of Deaths. Can we get labels on this map? 
 ggplot() +
-  geom_polygon(data=Deaths_join, color="black",
+  geom_polygon(data=Deaths_Per_County, color="black",
                aes(x=long, y=lat, group=COUNTY, fill=count_n)) +
   viridis::scale_fill_viridis(name="Simulated Data ", direction=-1) +
   coord_map("polyconic") +

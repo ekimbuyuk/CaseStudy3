@@ -1,0 +1,48 @@
+---
+title: "2nd Interm Report"
+author: "Ekim Buyuk"
+date: "10/3/2018"
+output: pdf_document
+---
+
+```{r}
+#Libraries
+if (!require("readr")) install.packages("readr")
+library(readr)
+if (!require("readxl")) install.packages("readxl")
+library(readxl)
+if (!require("dplyr")) install.packages("dplyr")
+library(dplyr)
+if (!require("maps")) install.packages("maps")
+library(maps)
+if (!require("ggthemes")) install.packages("ggthemes")
+library(ggthemes)
+if (!require("mapproj")) install.packages("mapproj")
+library(mapproj)
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+```
+
+```{r}
+data <- read_csv("Yr1116Death.csv")
+Country_Codes <- read_excel("Dataset Descriptions.xls", 
+     sheet = "County Codes")
+Country_Codes$CORES = as.integer(Country_Codes$CORES)
+colnames(Country_Codes)[colnames(Country_Codes)=="CORES"] <- "cores"
+merged_data<- left_join(Country_Codes,data)
+
+
+```
+
+Using a hierarchical model...
+1. Obtain estimates of infant mortality rates in 2015 by county and race/ethnicity and 
+2. Create your own version of the 2015 table published by SCHS
+3. Compare your estimates to the published estimates from the SCHS and discuss any discrepancies in detail
+
+Your report should include:
+1. Your table and visualization of estimates (and observed values) for 2015, 
+2. a one page (maximum) description of the model used, 
+3. 1-2 pages describing your findings, 
+4. and a 1-2 page report targeted at SCHS explaining how use of your model to obtain estimated rates compares to the methods you have seen them use so far, which are pooling years (as in the 2010-2014 graphic) or reporting rates based on small cell counts (as in 2015). 
+
+In your report targeted to SCHS, if you feel they should use different methodology (e.g., your model) for estimating infant mortality rates, be sure to make a clear argument for doing so.
