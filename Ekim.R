@@ -1,14 +1,10 @@
 #Ekim's File
 
 new_data = merged_data %>%
-  group_by(cores,race,hisp) %>%
+  group_by(COUNTY,race,hisp) %>%
   count()
 
 new_data$log_totals = log(new_data$n)
-merged_data$count = 1
-M1<-lmer(y~x+(1|county))
-
-model1 = lm(count ~ race + hisp + factor(COUNTY) -1)
 
 #Complete Pooling On County
 lm.pooled <- lm(count ~ race + hisp)
