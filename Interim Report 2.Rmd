@@ -21,6 +21,8 @@ if (!require("mapproj")) install.packages("mapproj")
 library(mapproj)
 if (!require("tidyverse")) install.packages("tidyverse")
 library(tidyverse)
+if (!require("stringi")) install.packages("stringi")
+library(stringi)
 ```
 
 ```{r}
@@ -30,8 +32,29 @@ Country_Codes <- read_excel("Dataset Descriptions.xls",
 Country_Codes$CORES = as.integer(Country_Codes$CORES)
 colnames(Country_Codes)[colnames(Country_Codes)=="CORES"] <- "cores"
 merged_data<- left_join(Country_Codes,data)
+#Convert first letter to Capital
+firstup <- function(x) {
+  substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+  x
+}
 
+merged_data$COUNTY = stri_trans_totitle(merged_data$COUNTY)
 
+#Categorize Race
+merged_data$race[merged_data$race == 1] = "White"
+merged_data$race[merged_data$race == 2] = "Black or African American"
+merged_data$race[merged_data$race == 3] = "American Indian or Alaska Native"
+merged_data$race[merged_data$race == 4] = "Other"
+
+#Categorize Hispanic Origin
+merged_data$hisp[merged_data$hisp == "C"] = "Cuban"
+merged_data$hisp[merged_data$hisp == "M"] = "Mexican"
+merged_data$hisp[merged_data$hisp == "N"] = "Non-Hispanic"
+merged_data$hisp[merged_data$hisp == "O"] = "Other Hispanic"
+merged_data$hisp[merged_data$hisp == "P"] = "Puerto Rican"
+merged_data$hisp[merged_data$hisp == "S"] = "Central/South American"
+merged_data$hisp[merged_data$hisp == "U"] = "Unknown"
+write.csv(merged_data, "deathdata.csv")
 ```
 
 Using a hierarchical model...
