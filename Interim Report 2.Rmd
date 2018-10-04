@@ -23,6 +23,8 @@ if (!require("tidyverse")) install.packages("tidyverse")
 library(tidyverse)
 if (!require("stringi")) install.packages("stringi")
 library(stringi)
+if (!require("lme4")) install.packages("lme4")
+library(lme4)
 ```
 
 ```{r, include = FALSE}
@@ -61,7 +63,7 @@ write.csv(merged_data, "deathdata.csv")
 Using a hierarchical model...
 1. Obtain estimates of infant mortality rates in 2015 by county and race/ethnicity and 
 2. Create your own version of the 2015 table published by SCHS
-3. Compare your estimates to the published estimates from the SCHS and discuss any discrepancies in detail
+3. Compare your estimates to the published estimates from the SCHS and discuss any discrepancies in detail.
 
 Your report should include:
 1. Your table and visualization of estimates (and observed values) for 2015, 
