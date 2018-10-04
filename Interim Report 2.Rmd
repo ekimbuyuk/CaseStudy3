@@ -5,7 +5,7 @@ date: "10/3/2018"
 output: pdf_document
 ---
 
-```{r}
+```{r, include=FALSE}
 #Libraries
 if (!require("readr")) install.packages("readr")
 library(readr)
@@ -25,7 +25,8 @@ if (!require("stringi")) install.packages("stringi")
 library(stringi)
 ```
 
-```{r}
+```{r, include = FALSE}
+#Data Cleaning
 data <- read_csv("Yr1116Death.csv")
 Country_Codes <- read_excel("Dataset Descriptions.xls", 
      sheet = "County Codes")
@@ -69,3 +70,4 @@ Your report should include:
 4. and a 1-2 page report targeted at SCHS explaining how use of your model to obtain estimated rates compares to the methods you have seen them use so far, which are pooling years (as in the 2010-2014 graphic) or reporting rates based on small cell counts (as in 2015). 
 
 In your report targeted to SCHS, if you feel they should use different methodology (e.g., your model) for estimating infant mortality rates, be sure to make a clear argument for doing so.
+
