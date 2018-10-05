@@ -59,6 +59,10 @@ birth_deaths$Total_Deaths[is.na(birth_deaths$Total_Deaths)] = 0
 birth_deaths$rate = birth_deaths$Total_Deaths/birth_deaths$n 
 
 new_data$log_totals = log(new_data$n)
+merged_data$count = 1
+M1<-lmer(y~x+(1|county))
+
+model1 = lm(new_data$count ~ new_data$race + new_data$hisp + factor(new_data$COUNTY) -1)
 
 #Complete Pooling On County
 lm.pooled <- lm(count ~ race + hisp)
