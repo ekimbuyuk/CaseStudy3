@@ -1,0 +1,15 @@
+---
+title: "Final Report"
+author: "Ekim Buyuk"
+date: "10/12/2018"
+output: pdf_document
+---
+
+Goal: 10 page report
+1. accompanied by useful visualizations, describing infant mortality in NC by county and race/ethnicity,
+2. along with any trends over time overall or in subgroups.
+
+```{r}
+
+```
+
